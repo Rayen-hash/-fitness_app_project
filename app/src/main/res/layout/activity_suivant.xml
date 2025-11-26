@@ -81,6 +81,20 @@
                 android:background="@drawable/rounded_input"
                 android:padding="12dp"
                 android:layout_marginBottom="24dp"/>
+            <!-- Liste déroulante -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choisir votre niveau d'activité"
+                android:textColor="#666"
+                android:padding="12dp" />
+            <Spinner
+                android:id="@+id/niveau"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/rounded_input"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp"/>
             <!-- Bouton Valider -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submitbtn"

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.login_signup.Models.Exercice;
 import com.example.login_signup.Models.User;
 
 import java.lang.reflect.Field;
@@ -15,7 +16,7 @@ import java.util.List;
 
 
 public class Database extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "contacts.db";
+    private static final String DATABASE_NAME = "fitness_app.db";
     public String createtable(Class<?> clazz, String tablename) {
         Field[] fields = clazz.getDeclaredFields();
         StringBuilder sb = new StringBuilder();
@@ -43,6 +44,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createtable(User.class ,"Users"));
+        onCreateexercice(db);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int
@@ -121,7 +123,7 @@ public class Database extends SQLiteOpenHelper {
         cols.add("ID");
         Field[] fields = User.class.getDeclaredFields();
         for (Field f : fields) {
-                cols.add(f.getName());
+            cols.add(f.getName());
 
         }
         String[] colsArray = cols.toArray(new String[0]);
@@ -137,5 +139,33 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor = db.query("Users",null,null,null,null,null,null);
         return cursor;
     }
+    String TABLE_NAME = "exercice";
+    public void onCreateexercice(SQLiteDatabase db) {
 
+        // Création de la table exercice
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                " (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITRE TEXT, DESCRIPTION TEXT)");
+
+        // Insertions des exercices avec emojis
+        db.execSQL("INSERT INTO " + TABLE_NAME +
+                " (TITRE, DESCRIPTION) VALUES ('Football ⚽', 'Match ou entraînement de football')");
+
+        db.execSQL("INSERT INTO " + TABLE_NAME +
+                " (TITRE, DESCRIPTION) VALUES ('Footing 🏃', 'Course en extérieur pour le cardio')");
+
+        db.execSQL("INSERT INTO " + TABLE_NAME +
+                " (TITRE, DESCRIPTION) VALUES ('Natation 🏊', 'Séance de natation pour tout le corps')");
+
+        db.execSQL("INSERT INTO " + TABLE_NAME +
+                " (TITRE, DESCRIPTION) VALUES ('Musculation 💪', 'Exercices de renforcement musculaire')");
+    }
+    public Cursor getAllExercices() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM exercice", null);
+    }
+
+    public Cursor getExercicebyId(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return  db.rawQuery("SELECT * FROM exercice WHERE ID=?",new String[]{String.valueOf(id)});
+    }
 }

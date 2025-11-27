@@ -107,8 +107,5 @@ public class SuivantActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 }

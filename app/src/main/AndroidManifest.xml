@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Login_signup">
         <activity
+            android:name=".Activity.ProfilActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Sprint2.AccueilActivity"
             android:exported="false" />
         <activity

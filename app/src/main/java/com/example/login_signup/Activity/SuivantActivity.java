@@ -87,16 +87,16 @@ public class SuivantActivity extends AppCompatActivity {
         });
         submit.setOnClickListener(v -> {
             if (edittaille.getText().toString().isEmpty() || editpoid.getText().toString().isEmpty()
-                    || editage.getText().toString().isEmpty()||obj[0].isEmpty()) {
+                    || editage.getText().toString().isEmpty()||obj[0].equals("--objectifs--") || niv[0].equals("--Niveau Activité--")) {
                 Toast.makeText(this,"il faut remplir tous les champs",Toast.LENGTH_LONG).show();
             }
             else{
                     String taille = edittaille.getText().toString();
                     String poids = editpoid.getText().toString();
                     String age = editage.getText().toString();
-                    user.set("taille",taille);
-                    user.set("poids",poids);
-                    user.set("age",age);
+                    user.set("taille",Double.valueOf(taille));
+                    user.set("poids",Double.valueOf(poids));
+                    user.set("age",Integer.parseInt(age));
                     user.set("objectif",obj[0]);
                     user.set("niveau_activite",niv[0]);
                     db.adduser(user);

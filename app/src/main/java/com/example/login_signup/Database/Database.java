@@ -38,7 +38,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Database(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 2);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -47,7 +47,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int
             newVersion) {
-        db = this.getReadableDatabase();
+        //db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name != 'android_metadata'",
                 null
@@ -76,21 +76,22 @@ public class Database extends SQLiteOpenHelper {
         db.close();
         return result != -1;
     }
-    public boolean updateuser(User user)
+    public boolean updateuser( int id , User user)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         Field[] fields = User.class.getDeclaredFields();
         for (Field f : fields) {
-            if (!f.getName().equals("id")) {
+            if (!f.getName().equals("id") & user.get(f.getName())!=null) {
                 contentValues.put(f.getName(), String.valueOf(user.get(f.getName())));
             }
         }
-        long result = db.update("Users", contentValues ,"id = ?", new String[]{String.valueOf(user.get("id"))});
+        long result = db.update("Users", contentValues ,"id = ?", new String[]{String.valueOf(id)});
         db.close();
         return  result !=-1;
 
-    } public Integer deleteUser(int id) {
+    }
+    public Integer deleteUser(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete("Users", "id = ?",new String[]{String.valueOf(id)});
         return result ;
@@ -99,7 +100,7 @@ public class Database extends SQLiteOpenHelper {
     public Cursor getUserById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> cols = new ArrayList<>();
-        cols.add("ID");
+        cols.add("id");
         Field[] fields = User.class.getDeclaredFields();
         for (Field f : fields) {
             if (!f.getName().equals("id")) {
@@ -118,10 +119,12 @@ public class Database extends SQLiteOpenHelper {
     public Cursor getUserbyEmail(String Email){
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> cols = new ArrayList<>();
-        cols.add("ID");
+        cols.add("id");
         Field[] fields = User.class.getDeclaredFields();
         for (Field f : fields) {
+            if (!f.getName().equals("id")) {
                 cols.add(f.getName());
+            }
 
         }
         String[] colsArray = cols.toArray(new String[0]);

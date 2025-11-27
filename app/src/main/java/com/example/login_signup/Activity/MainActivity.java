@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         db = new Database(this);
-        db.adduser(new User("Rayen", "Guesmi", "rayen@example.com", "123456", 70.0, 1.75, 25, "perte de poids","Niveau Intermédiaire (3–5 jours / semaine)"));
+        db.adduser(new User("Rayen", "Guesmi", "rayen@example.com", "123456", 70.0, 1.75, 25, "Prise de masse","Niveau Intermédiaire (3–5 jours / semaine)"));
         commencer =findViewById(R.id.btncom);
         commencer.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);

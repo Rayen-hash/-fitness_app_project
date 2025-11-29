@@ -3,9 +3,9 @@ A mobile application designed to help users track workouts, monitor progress, an
 
 Technologies Used:
 
-Java / Kotlin (Android)
+Java (Android)
 
-SQLite / Firebase
+SQLite
 
 Git/GitHub
 

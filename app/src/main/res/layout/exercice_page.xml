@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ajouter votre activités"
+            android:text="choisir votre activités"
             android:textSize="16sp"
             android:textColor="#666"
             android:paddingBottom="40dp"/>
@@ -37,7 +37,7 @@
         <ListView
             android:id="@+id/listeExercice"
             android:layout_width="match_parent"
-            android:layout_height="500dp"/>
+            android:layout_height="600dp"/>
 
         <Button
             android:id="@+id/btnretour"

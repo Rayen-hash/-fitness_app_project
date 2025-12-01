@@ -3,13 +3,14 @@ package com.example.login_signup.Activity.Sprint2;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.text.InputType;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.login_signup.Database.Database;
@@ -23,11 +24,16 @@ public class exerciceActivity extends AppCompatActivity {
     Database db;
     ArrayList<Integer> exerciceIds = new ArrayList<>();
 
+    // 🔹 Liste statique pour stocker les exercices et durées pendant la session
+    public static ArrayList<Integer> historiqueExerciceIds = new ArrayList<>();
+    public static ArrayList<Integer> historiqueDurees = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.exercice_page);
+
         db = new Database(this);
         btnretour = findViewById(R.id.btnretour);
         listeExercice = findViewById(R.id.listeExercice);
@@ -35,49 +41,60 @@ public class exerciceActivity extends AppCompatActivity {
         ArrayList<String> exercicelist = new ArrayList<>();
         Cursor cursor = db.getAllExercices();
 
-        // Vérifie s’il y a des données dans la base
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Récupère les colonnes
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow("ID"));
                 String titre = cursor.getString(cursor.getColumnIndexOrThrow("TITRE"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("DESCRIPTION"));
+                int calories = cursor.getInt(cursor.getColumnIndexOrThrow("CALORIES_HEURE"));
 
-                // Ajoute les infos dans les deux listes
-                exerciceIds.add(id); // pour savoir quel contact est cliqué
-                exercicelist.add("TITRE : " + titre + "\nDESCRIPTION : " + description); // texte à afficher
-            } while (cursor.moveToNext()); // Passe au contact suivant
+                exerciceIds.add(id);
+                exercicelist.add(titre + "\n" + description + "\nCalories/h : " + calories);
+            } while (cursor.moveToNext());
         }
-        // Ferme le curseur pour libérer la mémoire
         if (cursor != null) cursor.close();
-        // Adapter pour afficher la liste à l’écran
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,                             // Contexte actuel
-                android.R.layout.simple_list_item_1, // Modèle d’affichage simple
-                exercicelist                        // Données à afficher
-        );
 
-        // Relie l’adaptateur à la ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                exercicelist
+        );
         listeExercice.setAdapter(adapter);
 
-        listeExercice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Récupère l'ID du contact sélectionné
-                int exerciceId = exerciceIds.get(position);
-                // Prépare le passage vers l’activité d’édition du contact
+        // Lorsque l'utilisateur clique sur un exercice
+        listeExercice.setOnItemClickListener((parent, view, position, id) -> {
+            int exerciceId = exerciceIds.get(position);
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(exerciceActivity.this);
+            dialog.setTitle("Entrer la durée (minutes)");
+
+            final EditText input = new EditText(exerciceActivity.this);
+            input.setHint("Durée en minutes");
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            dialog.setView(input);
+
+            dialog.setPositiveButton("Valider", (d, which) -> {
+                String minutesText = input.getText().toString().trim();
+                if (minutesText.isEmpty()) return;
+
+                int minutes = Integer.parseInt(minutesText);
+
+                // Ajouter dans la liste statique
+                historiqueExerciceIds.add(exerciceId);
+                historiqueDurees.add(minutes);
+
+                // Aller à l'accueil
                 Intent intent = new Intent(exerciceActivity.this, AccueilActivity.class);
-                // Envoie l’ID du contact à l’autre activité
-                intent.putExtra("CONTACT_ID", exerciceId);
-                // Ouvre la nouvelle activité
                 startActivity(intent);
-            }
+            });
+
+            dialog.setNegativeButton("Annuler", null);
+            dialog.show();
         });
 
-    btnretour.setOnClickListener(v -> {
-        Intent intent = new Intent(exerciceActivity.this, AccueilActivity.class);
-        startActivity(intent);
-    });
-
+        btnretour.setOnClickListener(v -> {
+            Intent intent = new Intent(exerciceActivity.this, AccueilActivity.class);
+            startActivity(intent);
+        });
     }
 }

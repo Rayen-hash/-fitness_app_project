@@ -7,19 +7,34 @@
     android:layout_height="match_parent"
     tools:context=".Activity.Sprint2.AccueilActivity">
 
-    <TextView
-        android:id="@+id/txtAccueil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Page d'accueil"
-        android:textSize="32sp"
-        android:textColor="#2ECC71"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="25dp"
+        android:gravity="center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="35dp"
-        />
+        app:layout_constraintBottom_toTopOf="@id/bottomBar">
 
+        <TextView
+            android:id="@+id/txtAccueil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Page d'accueil"
+            android:textSize="32sp"
+            android:textColor="#2ECC71"
+            android:layout_marginTop="8dp"/>
+
+        <ListView
+            android:id="@+id/listeAccueil"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
 
     <!-- Barre en bas -->
     <LinearLayout
@@ -32,14 +47,16 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
+            android:id="@+id/btnHome"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:src="@drawable/home"
-            android:contentDescription="Home" />
+            android:contentDescription="Home"/>
 
         <ImageButton
+            android:id="@+id/btnExercice"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -48,6 +65,7 @@
             android:contentDescription="Exercice"/>
 
         <ImageButton
+            android:id="@+id/btnNutrition"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -56,6 +74,7 @@
             android:contentDescription="Nutrition"/>
 
         <ImageButton
+            android:id="@+id/btnProfil"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

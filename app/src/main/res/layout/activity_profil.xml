@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.ProfilActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:gravity="center_horizontal">
+        <!-- Titre -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Espace Profil"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:textColor="#1E1E1E"
+            android:paddingBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/nom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Saisir votre nom"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:background="@drawable/rounded_input"
+            android:layout_marginBottom="16dp"/>
+        <EditText
+            android:id="@+id/prenom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Saisir votre prenom"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:background="@drawable/rounded_input"
+            android:layout_marginBottom="16dp"/>
+            <!-- Champ Poids -->
+            <EditText
+                android:id="@+id/poid"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Saisir votre poids (kg)"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:background="@drawable/rounded_input"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Champ Taille -->
+            <EditText
+                android:id="@+id/taille"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Saisir votre taille (cm)"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:background="@drawable/rounded_input"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Champ Âge -->
+            <EditText
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Saisir votre âge"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:background="@drawable/rounded_input"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Liste déroulante -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choisir votre objectif"
+                android:textColor="#666"
+                android:padding="12dp" />
+            <Spinner
+                android:id="@+id/objectif_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/rounded_input"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp"/>
+            <!-- Liste déroulante -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choisir votre niveau d'activité"
+                android:textColor="#666"
+                android:padding="12dp" />
+            <Spinner
+                android:id="@+id/niveau"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/rounded_input"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp"/>
+            <!-- Bouton Valider -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submitbtn"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:text="Valider"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:cornerRadius="25dp"
+                android:backgroundTint="#2ECC71" />
+
+            <!-- Bouton Annuler -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelbtn"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:text="Annuler"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:cornerRadius="25dp"
+                android:backgroundTint="@color/red_custom"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

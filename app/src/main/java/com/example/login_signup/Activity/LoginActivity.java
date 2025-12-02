@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.login_signup.Activity.Sprint2.AccueilActivity;
 import com.example.login_signup.Database.Database;
-import com.example.login_signup.Models.User;
 import com.example.login_signup.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -42,28 +41,30 @@ public class LoginActivity extends AppCompatActivity {
             editpass.setText("");
         });
         submit.setOnClickListener(v -> {
-            if(editemail.getText().toString().isEmpty() | editpass.getText().toString().isEmpty()){
+            if(editemail.getText().toString().isEmpty() || editpass.getText().toString().isEmpty()){
                 Toast.makeText(this , "il faut remplir les deux champs " , Toast.LENGTH_LONG).show();
             }
-            else{
-                Cursor cursor = db.getUserbyEmail(editemail.getText().toString());
-                if(cursor != null && cursor.moveToFirst() ){
-                    String pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-                    if(!(pass.equals(editpass.getText().toString()))){
-                        Toast.makeText(this , "Mot de passe incorrecte" , Toast.LENGTH_LONG).show();
-                        editpass.setText("");
-                    }else {
-                        int id = cursor.getInt(cursor.getColumnIndexOrThrow("ID"));
-                        Intent intent = new Intent(LoginActivity.this, AccueilActivity.class);
-                        intent.putExtra("id",id);
-                        startActivity(intent);
-                    }
+            else {
 
-                }else{
-                    editemail.setText("");
-                    editpass.setText("");
-                    Toast.makeText(this , "ce email ne correspond a aucun Compte" , Toast.LENGTH_LONG).show();
-                }
+                    Cursor cursor = db.getUserbyEmail(editemail.getText().toString());
+                    if (cursor != null && cursor.moveToFirst()) {
+                        String pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+                        if (!(pass.equals(editpass.getText().toString()))) {
+                            Toast.makeText(this, "Mot de passe incorrecte", Toast.LENGTH_LONG).show();
+                            editpass.setText("");
+                        } else {
+                                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                                Intent intent = new Intent(LoginActivity.this, AccueilActivity.class);
+                                intent.putExtra("id", id);
+                                startActivity(intent);
+                        }
+
+                    } else {
+                        editemail.setText("");
+                        editpass.setText("");
+                        Toast.makeText(this, "ce email ne correspond a aucun Compte", Toast.LENGTH_LONG).show();
+                    }
+                    cursor.close();
             }
 
         });

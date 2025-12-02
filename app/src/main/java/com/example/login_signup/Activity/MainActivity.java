@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         commencer =findViewById(R.id.btncom);
 
         commencer.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, exerciceActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         });
 

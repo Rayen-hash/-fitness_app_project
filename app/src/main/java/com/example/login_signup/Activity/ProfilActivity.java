@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.login_signup.Activity.Sprint2.AccueilActivity;
 import com.example.login_signup.Database.Database;
 import com.example.login_signup.Models.User;
 import com.example.login_signup.R;
@@ -122,9 +123,8 @@ public class ProfilActivity extends AppCompatActivity {
         cancel=findViewById(R.id.cancelbtn);
         cancel.setOnClickListener(v -> {
             Toast.makeText(this , "modififcation annulée", Toast.LENGTH_LONG).show();
-            Intent intent = getIntent();
+            /*Intent intent = getIntent();*/
             finish();
-            startActivity(intent);
         });
 
 

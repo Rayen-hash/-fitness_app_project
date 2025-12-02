@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.login_signup.Models.Exercice;
 import com.example.login_signup.Models.User;
 
 import java.lang.reflect.Field;
@@ -15,7 +16,7 @@ import java.util.List;
 
 
 public class Database extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "contacts.db";
+    private static final String DATABASE_NAME = "fitness_app.db";
     public String createtable(Class<?> clazz, String tablename) {
         Field[] fields = clazz.getDeclaredFields();
         StringBuilder sb = new StringBuilder();
@@ -43,6 +44,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createtable(User.class ,"Users"));
+        onCreateexercice(db);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int
@@ -122,9 +124,11 @@ public class Database extends SQLiteOpenHelper {
         cols.add("id");
         Field[] fields = User.class.getDeclaredFields();
         for (Field f : fields) {
+
             if (!f.getName().equals("id")) {
                 cols.add(f.getName());
             }
+
 
         }
         String[] colsArray = cols.toArray(new String[0]);
@@ -140,5 +144,37 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor = db.query("Users",null,null,null,null,null,null);
         return cursor;
     }
+    String TABLE_NAME = "exercice";
+    public void onCreateexercice(SQLiteDatabase db) {
+        // Création de la table exercice avec la colonne CALORIES_HEURE
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                " (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITRE TEXT, DESCRIPTION TEXT, CALORIES_HEURE INTEGER)");
 
+// Insertion des exercices avec calories approximatives par heure
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Football ⚽', 'Match ou entraînement de football', 600)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Footing 🏃', 'Course en extérieur pour améliorer le cardio', 550)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Natation 🏊', 'Séance de natation pour renforcer tout le corps', 500)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Musculation 💪', 'Exercices de renforcement musculaire en salle', 400)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Cyclisme 🚴', 'Sortie à vélo pour travailler l’endurance', 600)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Saut à la corde 🤾', 'Excellent exercice pour le cardio et la coordination', 700)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Basketball 🏀', 'Match ou entraînement de basketball', 650)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Yoga 🧘', 'Séance d’étirements et de relaxation du corps et de l’esprit', 250)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Boxe 🥊', 'Entraînement de boxe : cardio, frappe et défense', 700)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Taekwondo 🥋', 'Art martial axé sur les coups de pied rapides', 650)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Karaté 🥋', 'Art martial axé sur les techniques de mains et pieds', 600)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('MMA 🤼‍♂️', 'Entraînement complet mélangeant plusieurs arts martiaux', 750)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Lutte 🤼', 'Sport de combat basé sur le contrôle et les projections', 700)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Jiu-Jitsu Brésilien 🇧🇷', 'Art martial basé sur le sol et les soumissions', 650)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('HIIT 🔥', 'Entraînement intensif par intervalles pour brûler des calories', 800)");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " (TITRE, DESCRIPTION, CALORIES_HEURE) VALUES ('Pilates 🧘‍♀️', 'Travail du gainage, posture et contrôle du corps', 300)");
+    }
+    public Cursor getAllExercices() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM exercice", null);
+    }
+
+    public Cursor getExercicebyId(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return  db.rawQuery("SELECT * FROM exercice WHERE ID=?",new String[]{String.valueOf(id)});
+    }
 }

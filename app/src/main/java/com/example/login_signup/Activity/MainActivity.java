@@ -7,6 +7,8 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.login_signup.Activity.Sprint2.AccueilActivity;
+import com.example.login_signup.Activity.Sprint2.exerciceActivity;
 import com.example.login_signup.Database.Database;
 
 import com.example.login_signup.Models.User;
@@ -25,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
         db = new Database(this);
         db.adduser(new User("Rayen", "Guesmi", "rayen@example.com", "123456", 70.0, 1.75, 25, "Prise de masse","Niveau Intermédiaire (3–5 jours / semaine)"));
         commencer =findViewById(R.id.btncom);
+
         commencer.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, exerciceActivity.class);
             startActivity(intent);
         });
 

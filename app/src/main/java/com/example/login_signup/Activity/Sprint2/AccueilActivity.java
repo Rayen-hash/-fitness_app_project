@@ -74,7 +74,6 @@ public class AccueilActivity extends AppCompatActivity {
                 if (cursor != null) cursor.close();
             }
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, liste);
         listeAccueil.setAdapter(adapter);

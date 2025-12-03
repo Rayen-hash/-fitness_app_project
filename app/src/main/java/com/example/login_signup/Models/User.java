@@ -49,5 +49,6 @@ public class User implements Serializable {
             e.printStackTrace();
         }
     }
+    /*Calcul calories*/
 }
 

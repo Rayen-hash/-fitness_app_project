@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.login_signup.Activity.ProfilActivity;
 import com.example.login_signup.Database.Database;
 import com.example.login_signup.R;
 
@@ -20,7 +21,7 @@ public class AccueilActivity extends AppCompatActivity {
 
     ListView listeAccueil;
     Database db;
-    ImageButton btnExercice, btnHome, btnProfil, btnNutrition;
+    ImageButton btnExercice, btnHome, btnProfil, btnNutrition , btnHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,8 @@ public class AccueilActivity extends AppCompatActivity {
         btnHome = findViewById(R.id.btnHome);
         btnProfil = findViewById(R.id.btnProfil);
         btnNutrition = findViewById(R.id.btnNutrition);
+        btnHistory=findViewById(R.id.btnHistory);
+        int id = getIntent().getIntExtra("id" , 0);
 
         btnExercice.setOnClickListener(v -> {
             Intent intent = new Intent(AccueilActivity.this, exerciceActivity.class);
@@ -39,6 +42,11 @@ public class AccueilActivity extends AppCompatActivity {
         });
         btnHome.setOnClickListener(v -> {
             Intent intent = new Intent(AccueilActivity.this, AccueilActivity.class);
+            startActivity(intent);
+        });
+        btnProfil.setOnClickListener(v -> {
+            Intent intent = new Intent(AccueilActivity.this, ProfilActivity.class);
+            intent.putExtra("id", id);
             startActivity(intent);
         });
 

@@ -13,8 +13,6 @@ import com.example.login_signup.Models.User;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "fitness_app.db";
     public String createtable(Class<?> clazz, String tablename) {
@@ -128,8 +126,6 @@ public class Database extends SQLiteOpenHelper {
             if (!f.getName().equals("id")) {
                 cols.add(f.getName());
             }
-
-
         }
         String[] colsArray = cols.toArray(new String[0]);
         Cursor cursor = db.query(
@@ -178,3 +174,17 @@ public class Database extends SQLiteOpenHelper {
         return  db.rawQuery("SELECT * FROM exercice WHERE ID=?",new String[]{String.valueOf(id)});
     }
 }
+/*les methodes a ajouter pour manipuler les elements de table Seances
+*getSeanceByuserid(id) : retourne un cursor contient les seances ou colonne id_user = id
+*addSeance(id) : creer une nouvelle seance dans db ou id_user = id
+*getExercicesinSeance(idSeance) : retourne List<int> des id des exercices de seance
+*                                 les ids sont enregistres dans la db sous forme string
+*                                 "id1 id2 id3 id4 ....."
+*getDureExercicesinSeance(idSeance): retourne List<int> des durees des exercices de seance
+ *                                  les durees sont enregistres dans la db sous forme string
+ *                                  "duree1 duree2 duree3 duree4 ....."
+*getSeanceById(idSeance) : retourne un cursor contient la seance ou id=idSeance
+*updateSeance(id:idSeance ,attribut a changé :"list_exercices",nouvelle valeur:list_id_exercices):
+*                   methode pour update un attributs de la ligne dans la db au lieu de recupere la ligne rechanger puis
+*                   le re-enregistrer (list exercices , list durée dans ce cas sont des strings);
+*/

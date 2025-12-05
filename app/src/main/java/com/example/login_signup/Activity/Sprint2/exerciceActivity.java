@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.login_signup.Database.Database;
+import com.example.login_signup.Models.Seance;
 import com.example.login_signup.R;
 
 import java.util.ArrayList;
@@ -24,9 +25,10 @@ public class exerciceActivity extends AppCompatActivity {
     Database db;
     ArrayList<Integer> exerciceIds = new ArrayList<>();
 
-    //Liste statique pour stocker les exercices et durées pendant la session
+
+    /*Liste statique pour stocker les exercices et durées pendant la session
     public static ArrayList<Integer> historiqueExerciceIds = new ArrayList<>();
-    public static ArrayList<Integer> historiqueDurees = new ArrayList<>();
+    public static ArrayList<Integer> historiqueDurees = new ArrayList<>();*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class exerciceActivity extends AppCompatActivity {
         db = new Database(this);
         btnretour = findViewById(R.id.btnretour);
         listeExercice = findViewById(R.id.listeExercice);
+        int idSeance = getIntent().getIntExtra("idSeance" , -1);
 
         ArrayList<String> exercicelist = new ArrayList<>();
         Cursor cursor = db.getAllExercices();
@@ -77,11 +80,22 @@ public class exerciceActivity extends AppCompatActivity {
                 String minutesText = input.getText().toString().trim();
                 if (minutesText.isEmpty()) return;
 
-                int minutes = Integer.parseInt(minutesText);
+                /*Ajouter les exercices et leurs durées dans les listes correspondantes dans  l'objet
+                 seance de ce jours */
 
-                // Ajouter dans la liste statique
-                historiqueExerciceIds.add(exerciceId);
-                historiqueDurees.add(minutes);
+                Cursor cursorSeance = db.getSeanceById(idSeance);
+                if (cursorSeance != null && cursorSeance.moveToFirst()) {
+                    do {
+                        String list_id_exercices= cursorSeance.getString(cursorSeance.getColumnIndexOrThrow(" list_exercices")) +" "+ String.valueOf(exerciceId) ;
+                        db.updateSeance(idSeance ,"list_exercices",list_id_exercices);
+                        String list_dure_exercices= cursorSeance.getString(cursorSeance.getColumnIndexOrThrow(" list_dures")) +" "+minutesText;
+                        db.updateSeance(idSeance,"list_exercices",list_dure_exercices);
+                    } while (cursorSeance.moveToNext());
+                }
+                if (cursorSeance != null) cursorSeance.close();
+
+                /*historiqueExerciceIds.add(exerciceId);
+                historiqueDurees.add(minutes);*/
 
                 // Aller à l'accueil
                 Intent intent = new Intent(exerciceActivity.this, AccueilActivity.class);

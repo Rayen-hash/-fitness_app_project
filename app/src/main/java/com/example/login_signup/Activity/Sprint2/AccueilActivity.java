@@ -2,6 +2,7 @@ package com.example.login_signup.Activity.Sprint2;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -15,7 +16,9 @@ import com.example.login_signup.Activity.ProfilActivity;
 import com.example.login_signup.Database.Database;
 import com.example.login_signup.R;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccueilActivity extends AppCompatActivity {
 
@@ -34,10 +37,41 @@ public class AccueilActivity extends AppCompatActivity {
         btnProfil = findViewById(R.id.btnProfil);
         btnNutrition = findViewById(R.id.btnNutrition);
         btnHistory=findViewById(R.id.btnHistory);
+        //id d'utilisateur connecté
         int id = getIntent().getIntExtra("id" , 0);
-
+        final int[] idSeance = new int[1];
+        /*recherche si il y a une seance deja creeé pour ce user aujourd'hui */
+        Cursor cursor = db.getSeanceByuserid(id);
+        Boolean existSeancetoday = false;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String date_seance = cursor.getString(cursor.getColumnIndexOrThrow(" date_seance"));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    if (date_seance.equals(LocalDate.now().toString())){
+                        existSeancetoday=true;
+                        idSeance[0] = cursor.getInt(cursor.getColumnIndexOrThrow(" id"));
+                    }
+                }
+            } while (cursor.moveToNext() || existSeancetoday==true);
+        }
+        if (existSeancetoday==false){
+            db.addSeance(id);
+            /*on refait le recherche de seance qu'on a ajouter pour recupere son id*/
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String date_seance = cursor.getString(cursor.getColumnIndexOrThrow(" date_seance"));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        if (date_seance.equals(LocalDate.now().toString())){
+                            idSeance[0] = cursor.getInt(cursor.getColumnIndexOrThrow(" id"));
+                        }
+                    }
+                } while (cursor.moveToNext());
+            }
+            if (cursor != null) cursor.close();
+        }
         btnExercice.setOnClickListener(v -> {
             Intent intent = new Intent(AccueilActivity.this, exerciceActivity.class);
+            intent.putExtra("idSeance", idSeance[0]);
             startActivity(intent);
         });
         btnHome.setOnClickListener(v -> {
@@ -52,15 +86,20 @@ public class AccueilActivity extends AppCompatActivity {
 
         db = new Database(this);
         listeAccueil = findViewById(R.id.listeAccueil);
-
         ArrayList<String> liste = new ArrayList<>();
 
-        if (exerciceActivity.historiqueExerciceIds.isEmpty()) {
+        /*methode qui recupere la liste des exercices dans une seance par l'id de seance*/
+        List<Integer> historiqueExerciceIds = db.getExercicesinSeance(idSeance[0]);
+
+        /*methode qui recupere la liste des exercices dans une seance par l'id de seance*/
+        List<Integer> historiqueDurees=db.getDureExercicesinSeance(idSeance[0]);
+
+        if (historiqueExerciceIds.isEmpty()) {
             Toast.makeText(this, "Aucun exercice dans l'historique", Toast.LENGTH_SHORT).show();
         } else {
-            for (int i = 0; i < exerciceActivity.historiqueExerciceIds.size(); i++) {
-                int exerciceId = exerciceActivity.historiqueExerciceIds.get(i);
-                int duree = exerciceActivity.historiqueDurees.get(i);
+            for (int i = 0; i < historiqueExerciceIds.size(); i++) {
+                int exerciceId = historiqueExerciceIds.get(i);
+                int duree = historiqueDurees.get(i);
 
                 Cursor cursor = db.getExercicebyId(exerciceId);
 

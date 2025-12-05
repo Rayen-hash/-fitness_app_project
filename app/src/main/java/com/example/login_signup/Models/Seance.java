@@ -8,10 +8,14 @@ import java.util.List;
 
 public class Seance {
     int id;
-    List<Exercice> exercices ;
+    List<Integer> id_exercices ;
     List<Integer> dures_exercice;
     int id_user;
     String date_seance ;
+
+    public Seance() {
+    }
+
     public Seance(int id_user){
         this.id=id;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -29,15 +33,6 @@ public class Seance {
         }
     }
 
-    public void set(String attribut, Object newValue) {
-        try {
-            Field field = this.getClass().getDeclaredField(attribut);
-            field.setAccessible(true);
-            field.set(this, newValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }

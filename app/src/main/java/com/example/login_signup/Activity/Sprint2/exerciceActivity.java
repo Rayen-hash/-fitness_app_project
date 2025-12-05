@@ -24,7 +24,7 @@ public class exerciceActivity extends AppCompatActivity {
     Database db;
     ArrayList<Integer> exerciceIds = new ArrayList<>();
 
-    // 🔹 Liste statique pour stocker les exercices et durées pendant la session
+    //Liste statique pour stocker les exercices et durées pendant la session
     public static ArrayList<Integer> historiqueExerciceIds = new ArrayList<>();
     public static ArrayList<Integer> historiqueDurees = new ArrayList<>();
 

@@ -11,13 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:padding="25dp"
+        android:padding="16dp"
         android:gravity="center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomBar">
 
+        <!-- Titre principal -->
         <TextView
             android:id="@+id/txtAccueil"
             android:layout_width="wrap_content"
@@ -25,14 +24,48 @@
             android:text="Page d'accueil"
             android:textSize="32sp"
             android:textColor="#2ECC71"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginBottom="16dp"
+            android:textStyle="bold"/>
+
+        <!-- Liste Exercices -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exercices"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#34495E"
+            android:padding="4dp"
+            android:background="#DCE6F1"/>
 
         <ListView
-            android:id="@+id/listeAccueil"
+            android:id="@+id/listeAccueil1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="4dp"/>
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Liste Nutrition -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingrédients"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#34495E"
+            android:padding="4dp"
+            android:background="#DCE6F1"/>
+
+        <ListView
+            android:id="@+id/listeAccueil2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 
@@ -73,14 +106,7 @@
             android:src="@drawable/food"
             android:contentDescription="Nutrition"/>
 
-        <ImageButton
-            android:id="@+id/btnHistory"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/stats"
-            android:contentDescription="History"/>
+
 
         <ImageButton
             android:id="@+id/btnProfil"
@@ -88,8 +114,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:contentDescription="Profil"
-            android:src="@drawable/profil" />
+            android:src="@drawable/profil"
+            android:contentDescription="Profil" />
 
     </LinearLayout>
 

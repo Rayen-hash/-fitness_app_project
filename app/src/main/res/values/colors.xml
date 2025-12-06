@@ -11,5 +11,6 @@
     <color name="green_custom">#147345</color>
     <color name="red_custom">#E74C3C</color>
     <color name="introductioncolor">#F5F5F5</color>
+    <color name="teal_700">#018786</color>
 
 </resources>

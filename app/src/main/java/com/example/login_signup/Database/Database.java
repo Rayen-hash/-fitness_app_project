@@ -46,8 +46,9 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createtable(User.class, "Users"));
-        db.execSQL(createtable(Seance.class, "Seances"));
+        //db.execSQL(createtable(Seance.class, "Seances"));
         onCreateexercice(db);
+        onCreateIngridients(db);
     }
 
     @Override
@@ -232,4 +233,37 @@ public class Database extends SQLiteOpenHelper {
 
         db.execSQL("UPDATE seance SET id = ? WHERE idSeance = ?", new Object[]{ newId, idSeance });
     }
+    public void onCreateIngridients(SQLiteDatabase db) {
+        // Création de la table sans la colonne QUANTITE
+        db.execSQL("CREATE TABLE IF NOT EXISTS ingridients (" +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "NOM TEXT, " +
+                "PROTEINES FLOAT, " +
+                "CARBS FLOAT, " +
+                "FATS FLOAT)");
+
+        // Insertion d'exemples d'ingrédients pour sportifs avec emoji
+        db.execSQL("INSERT INTO ingridients (NOM, PROTEINES, CARBS, FATS) VALUES " +
+                "('Escalope de poulet 🍗', 31, 0, 3.6), " +
+                "('Saumon 🐟', 20, 0, 13), " +
+                "('Oeuf 🥚', 13, 1.1, 11), " +
+                "('Quinoa cuit 🌾', 4.4, 21, 1.9), " +
+                "('Avoine 🥣', 17, 66, 7), " +
+                "('Brocoli 🥦', 2.8, 7, 0.4), " +
+                "('Amandes 🌰', 21, 22, 49), " +
+                "('Riz complet cuit 🍚', 2.6, 23, 0.9), " +
+                "('Banane 🍌', 1.1, 23, 0.3), " +
+                "('Fromage blanc 0% 🧈', 8, 3, 0.2)");
+    }
+    public Cursor getAllIngridients() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM ingridients", null);
+    }
+    public Cursor getIngridientbyId(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM ingridients WHERE ID=?", new String[]{String.valueOf(id)});
+    }
+
+
+
 }

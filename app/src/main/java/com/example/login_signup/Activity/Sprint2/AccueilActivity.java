@@ -18,7 +18,8 @@ import java.util.ArrayList;
 
 public class AccueilActivity extends AppCompatActivity {
 
-    ListView listeAccueil;
+    ListView listeAccueil1;
+    ListView listeAccueil2;
     Database db;
     ImageButton btnExercice, btnHome, btnProfil, btnNutrition;
 
@@ -32,6 +33,9 @@ public class AccueilActivity extends AppCompatActivity {
         btnHome = findViewById(R.id.btnHome);
         btnProfil = findViewById(R.id.btnProfil);
         btnNutrition = findViewById(R.id.btnNutrition);
+        db = new Database(this);
+        listeAccueil1 = findViewById(R.id.listeAccueil1);
+        listeAccueil2 = findViewById(R.id.listeAccueil2);
 
         btnExercice.setOnClickListener(v -> {
             Intent intent = new Intent(AccueilActivity.this, exerciceActivity.class);
@@ -41,10 +45,12 @@ public class AccueilActivity extends AppCompatActivity {
             Intent intent = new Intent(AccueilActivity.this, AccueilActivity.class);
             startActivity(intent);
         });
-        db = new Database(this);
-        listeAccueil = findViewById(R.id.listeAccueil);
+        btnNutrition.setOnClickListener(v -> {
+            Intent intent = new Intent(AccueilActivity.this, ingridientActivity.class);
+            startActivity(intent);
+        });
 
-        ArrayList<String> liste = new ArrayList<>();
+        ArrayList<String> liste1 = new ArrayList<>();
 
         if (exerciceActivity.historiqueExerciceIds.isEmpty()) {
             Toast.makeText(this, "Aucun exercice dans l'historique", Toast.LENGTH_SHORT).show();
@@ -62,7 +68,7 @@ public class AccueilActivity extends AppCompatActivity {
 
                     double caloriesBrulees = calHeure * (duree / 60.0);
 
-                    liste.add(
+                    liste1.add(
                             "Exercice : " + titre + "\n" +
                                     desc + "\n" +
                                     "Durée : " + duree + " min\n" +
@@ -72,9 +78,42 @@ public class AccueilActivity extends AppCompatActivity {
                 if (cursor != null) cursor.close();
             }
         }
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, liste1);
+        listeAccueil1.setAdapter(adapter1);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, liste);
-        listeAccueil.setAdapter(adapter);
+        ArrayList<String> liste2 = new ArrayList<>();
+
+        if (ingridientActivity.historiqueIngridientsIds.isEmpty()) {
+            Toast.makeText(this, "Aucun ingridient dans l'historique", Toast.LENGTH_SHORT).show();
+        } else {
+            for (int i = 0; i < ingridientActivity.historiqueIngridientsIds.size(); i++) {
+                int ingridientId = ingridientActivity.historiqueIngridientsIds.get(i);
+                int quantite = ingridientActivity.historiqueQauntite.get(i);
+
+                Cursor cursor = db.getIngridientbyId(ingridientId);
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("ID"));
+                    String nom = cursor.getString(cursor.getColumnIndexOrThrow("NOM"));
+                    float prot = cursor.getFloat(cursor.getColumnIndexOrThrow("PROTEINES"));
+                    float carb = cursor.getFloat(cursor.getColumnIndexOrThrow("CARBS"));
+                    float fat = cursor.getFloat(cursor.getColumnIndexOrThrow("FATS"));
+
+                    float protcalcule = prot * (quantite / 100.0f);
+                    float carbcalcule = carb * (quantite / 100.0f);
+                    float fatcalcule = fat * (quantite / 100.0f);
+
+                    liste2.add(
+                             nom + "\n proteines : " +
+                                    protcalcule + "\n carbs : " + carbcalcule + "\n fats :  " + fatcalcule
+                    );
+                }
+                if (cursor != null) cursor.close();
+            }
+        }
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, liste2);
+        listeAccueil2.setAdapter(adapter2);
     }
 }

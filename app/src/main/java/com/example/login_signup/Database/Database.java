@@ -17,6 +17,7 @@ import java.util.List;
 
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "fitness_app.db";
+
     public String createtable(Class<?> clazz, String tablename) {
         Field[] fields = clazz.getDeclaredFields();
         StringBuilder sb = new StringBuilder();
@@ -25,7 +26,7 @@ public class Database extends SQLiteOpenHelper {
                 .append(" (id INTEGER PRIMARY KEY AUTOINCREMENT, ");
 
         for (Field f : fields) {
-            if(!(f.getName().equals("id"))){
+            if (!(f.getName().equals("id"))) {
                 String col = f.getName();
                 sb.append(col).append(" TEXT,");
             }
@@ -41,11 +42,14 @@ public class Database extends SQLiteOpenHelper {
     public Database(Context context) {
         super(context, DATABASE_NAME, null, 2);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(createtable(User.class ,"Users"));
+        db.execSQL(createtable(User.class, "Users"));
+        db.execSQL(createtable(Seance.class, "Seances"));
         onCreateexercice(db);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int
             newVersion) {
@@ -64,13 +68,14 @@ public class Database extends SQLiteOpenHelper {
         cursor.close();
         onCreate(db);
     }
+
     public boolean adduser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         Field[] fields = User.class.getDeclaredFields();
         for (Field f : fields) {
             if (!f.getName().equals("id")) {
-                contentValues.put(f.getName(),String.valueOf(user.get(f.getName())));
+                contentValues.put(f.getName(), String.valueOf(user.get(f.getName())));
             }
 
         }
@@ -78,27 +83,29 @@ public class Database extends SQLiteOpenHelper {
         db.close();
         return result != -1;
     }
-    public boolean updateuser( int id , User user)
-    {
+
+    public boolean updateuser(int id, User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         Field[] fields = User.class.getDeclaredFields();
         for (Field f : fields) {
-            if (!f.getName().equals("id") & user.get(f.getName())!=null) {
+            if (!f.getName().equals("id") & user.get(f.getName()) != null) {
                 contentValues.put(f.getName(), String.valueOf(user.get(f.getName())));
             }
         }
-        long result = db.update("Users", contentValues ,"id = ?", new String[]{String.valueOf(id)});
+        long result = db.update("Users", contentValues, "id = ?", new String[]{String.valueOf(id)});
         db.close();
-        return  result !=-1;
+        return result != -1;
 
     }
+
     public Integer deleteUser(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete("Users", "id = ?",new String[]{String.valueOf(id)});
-        return result ;
+        int result = db.delete("Users", "id = ?", new String[]{String.valueOf(id)});
+        return result;
 
     }
+
     public Cursor getUserById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> cols = new ArrayList<>();
@@ -114,11 +121,12 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor = db.query(
                 "Users",
                 colsArray,
-                "id = ?",new String[]{String.valueOf(id)},
-                null,null,null);
+                "id = ?", new String[]{String.valueOf(id)},
+                null, null, null);
         return cursor;
     }
-    public Cursor getUserbyEmail(String Email){
+
+    public Cursor getUserbyEmail(String Email) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> cols = new ArrayList<>();
         cols.add("id");
@@ -135,16 +143,18 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor = db.query(
                 "Users",
                 colsArray,
-                "email = ?",new String[]{Email},
-                null,null,null);
+                "email = ?", new String[]{Email},
+                null, null, null);
         return cursor;
     }
     public Cursor getAllCUsers() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query("Users",null,null,null,null,null,null);
+        Cursor cursor = db.query("Users", null, null, null, null, null, null);
         return cursor;
     }
+
     String TABLE_NAME = "exercice";
+
     public void onCreateexercice(SQLiteDatabase db) {
         // Création de la table exercice avec la colonne CALORIES_HEURE
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
@@ -173,8 +183,53 @@ public class Database extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM exercice", null);
     }
 
-    public Cursor getExercicebyId(int id){
+    public Cursor getExercicebyId(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return  db.rawQuery("SELECT * FROM exercice WHERE ID=?",new String[]{String.valueOf(id)});
+        return db.rawQuery("SELECT * FROM exercice WHERE ID=?", new String[]{String.valueOf(id)});
+    }
+    public Cursor getseancebyId(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM Seance WHERE id=?", new String[]{String.valueOf(id)});
+    }
+    public Cursor getSeanceByuserid(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM Seance WHERE id_user=?", new String[]{String.valueOf(id)});
+    }
+    public void addSeance(int id , SQLiteDatabase db){
+
+    }
+
+    public ArrayList getExercicesinSeance(int idSeance){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Integer> l = new ArrayList<>();
+
+        Cursor  c=db.rawQuery("SELECT id_exercices FROM Seance WHERE idSeance=?" , new String[]{String.valueOf(idSeance)});
+         while(c.moveToNext()){
+             int id = c.getInt(0);
+             l.add(id);
+         }
+         c.close();
+         return l;
+    }
+    public ArrayList getDureExerciceinSeance(int idSeance){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<String> l = new ArrayList<>();
+
+        Cursor  c=db.rawQuery("SELECT dure_exercice FROM Seance WHERE idSeance=?" , new String[]{String.valueOf(idSeance)});
+        while(c.moveToNext()){
+            String dure = c.getString(0);
+            l.add(dure+" ");
+        }
+        c.close();
+        return l;
+    }
+    public Cursor getSeanceById(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("SELECT * FROM seance WHERE idSeance = ? ", new String[]{String.valueOf(id)});
+    }
+    public void updateSeance(int idSeance, int id, int newId) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL("UPDATE seance SET id = ? WHERE idSeance = ?", new Object[]{ newId, idSeance });
     }
 }

@@ -41,7 +41,6 @@ public class AccueilActivity extends AppCompatActivity {
             Intent intent = new Intent(AccueilActivity.this, AccueilActivity.class);
             startActivity(intent);
         });
-
         db = new Database(this);
         listeAccueil = findViewById(R.id.listeAccueil);
 
@@ -70,7 +69,6 @@ public class AccueilActivity extends AppCompatActivity {
                                     "Calories brûlées : " + String.format("%.2f", caloriesBrulees) + " kcal\n"
                     );
                 }
-
                 if (cursor != null) cursor.close();
             }
         }

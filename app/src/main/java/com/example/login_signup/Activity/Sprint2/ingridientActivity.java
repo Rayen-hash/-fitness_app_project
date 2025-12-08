@@ -85,8 +85,7 @@ public class ingridientActivity extends AppCompatActivity {
                 historiqueQauntite.add(quantity);
 
                 // Aller à l'accueil
-                Intent intent = new Intent(ingridientActivity.this, AccueilActivity.class);
-                startActivity(intent);
+                finish();
             });
 
             dialog.setNegativeButton("Annuler", null);
@@ -94,8 +93,7 @@ public class ingridientActivity extends AppCompatActivity {
         });
 
         btnretour.setOnClickListener(v -> {
-            Intent intent = new Intent(ingridientActivity.this, AccueilActivity.class);
-            startActivity(intent);
+           finish();
         });
         }
 

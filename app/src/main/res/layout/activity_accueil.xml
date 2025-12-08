@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Activity.Sprint2.AccueilActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -26,6 +27,91 @@
             android:textColor="#2ECC71"
             android:layout_marginBottom="16dp"
             android:textStyle="bold"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/txtNomPrenom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nom Prénom"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#2C3E50"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:id="@+id/txtBesoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Besoin calorique :"
+                    android:textSize="16sp"
+                    android:textColor="#34495E"/>
+
+                <TextView
+                    android:id="@+id/txtObjectif"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Objectif :"
+                    android:textSize="16sp"
+                    android:textColor="#34495E"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- PROGRESSION CALORIES -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Calories  : "
+                        android:textSize="14sp"
+                        android:textColor="#34495E"/>
+                    <TextView
+                        android:id="@+id/txtCaloriesProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="14sp"
+                        android:textColor="#34495E"/>
+                    <TextView
+                        android:id="@+id/txtCaloriesobj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="14sp"
+                        android:textColor="#34495E"/>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressCalories"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:progress="30"
+                    android:max="100"
+                    android:progressTint="#2ECC71"
+                    android:backgroundTint="#D5D8DC"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
 
         <!-- Liste Exercices -->
         <TextView

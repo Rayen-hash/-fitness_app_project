@@ -50,5 +50,6 @@ public class User implements Serializable {
         }
     }
     /*Calcul calories*/
+
 }
 

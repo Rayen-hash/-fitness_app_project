@@ -39,7 +39,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Database(Context context) {
-        super(context, DATABASE_NAME, null, 2);
+        super(context, DATABASE_NAME, null, 3);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {

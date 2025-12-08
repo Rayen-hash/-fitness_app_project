@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.login_signup.Activity.ProfilActivity;
 import com.example.login_signup.Database.Database;
 import com.example.login_signup.R;
 
@@ -21,8 +22,8 @@ public class AccueilActivity extends AppCompatActivity {
     ListView listeAccueil1;
     ListView listeAccueil2;
     Database db;
-    ImageButton btnExercice, btnHome, btnProfil, btnNutrition;
-
+    ImageButton btnExercice, btnHome, btnProfil, btnNutrition , btnHistory;
+    ArrayList<String> liste = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +34,12 @@ public class AccueilActivity extends AppCompatActivity {
         btnHome = findViewById(R.id.btnHome);
         btnProfil = findViewById(R.id.btnProfil);
         btnNutrition = findViewById(R.id.btnNutrition);
+
         db = new Database(this);
         listeAccueil1 = findViewById(R.id.listeAccueil1);
         listeAccueil2 = findViewById(R.id.listeAccueil2);
+
+        int id = getIntent().getIntExtra("id" , 0);
 
         btnExercice.setOnClickListener(v -> {
             Intent intent = new Intent(AccueilActivity.this, exerciceActivity.class);
@@ -45,8 +49,14 @@ public class AccueilActivity extends AppCompatActivity {
             Intent intent = new Intent(AccueilActivity.this, AccueilActivity.class);
             startActivity(intent);
         });
+
         btnNutrition.setOnClickListener(v -> {
             Intent intent = new Intent(AccueilActivity.this, ingridientActivity.class);
+            startActivity(intent);
+        });
+        btnProfil.setOnClickListener(v -> {
+            Intent intent = new Intent(AccueilActivity.this, ProfilActivity.class);
+            intent.putExtra("id", id);
             startActivity(intent);
         });
 
@@ -94,7 +104,7 @@ public class AccueilActivity extends AppCompatActivity {
                 Cursor cursor = db.getIngridientbyId(ingridientId);
 
                 if (cursor != null && cursor.moveToFirst()) {
-                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("ID"));
+                    //int id_ing = cursor.getInt(cursor.getColumnIndexOrThrow("ID"));
                     String nom = cursor.getString(cursor.getColumnIndexOrThrow("NOM"));
                     float prot = cursor.getFloat(cursor.getColumnIndexOrThrow("PROTEINES"));
                     float carb = cursor.getFloat(cursor.getColumnIndexOrThrow("CARBS"));
@@ -116,4 +126,53 @@ public class AccueilActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, liste2);
         listeAccueil2.setAdapter(adapter2);
     }
+   @Override
+    protected void onResume() {
+        super.onResume();
+        liste.clear();
+        loadlist();
+
+
+    }
+    public void loadlist(){
+        db = new Database(this);
+        listeAccueil1 = findViewById(R.id.listeAccueil1);
+
+        ArrayList<String> liste = new ArrayList<>();
+
+        if (exerciceActivity.historiqueExerciceIds.isEmpty()) {
+            Toast.makeText(this, "Aucun exercice dans l'historique", Toast.LENGTH_SHORT).show();
+        } else {
+            for (int i = 0; i < exerciceActivity.historiqueExerciceIds.size(); i++) {
+                int exerciceId = exerciceActivity.historiqueExerciceIds.get(i);
+                int duree = exerciceActivity.historiqueDurees.get(i);
+
+                Cursor cursor = db.getExercicebyId(exerciceId);
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    String titre = cursor.getString(cursor.getColumnIndexOrThrow("TITRE"));
+                    String desc = cursor.getString(cursor.getColumnIndexOrThrow("DESCRIPTION"));
+                    int calHeure = cursor.getInt(cursor.getColumnIndexOrThrow("CALORIES_HEURE"));
+
+                    double caloriesBrulees = calHeure * (duree / 60.0);
+
+                    liste.add(
+                            "Exercice : " + titre + "\n" +
+                                    desc + "\n" +
+                                    "Durée : " + duree + " min\n" +
+                                    "Calories brûlées : " + String.format("%.2f", caloriesBrulees) + " kcal\n"
+                    );
+                }
+
+                if (cursor != null) cursor.close();
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, liste);
+        listeAccueil1.setAdapter(adapter);
+    
+
+}
+
 }

@@ -84,8 +84,7 @@ public class exerciceActivity extends AppCompatActivity {
                 historiqueDurees.add(minutes);
 
                 // Aller à l'accueil
-                Intent intent = new Intent(exerciceActivity.this, AccueilActivity.class);
-                startActivity(intent);
+                finish();
             });
 
             dialog.setNegativeButton("Annuler", null);
@@ -93,8 +92,7 @@ public class exerciceActivity extends AppCompatActivity {
         });
 
         btnretour.setOnClickListener(v -> {
-            Intent intent = new Intent(exerciceActivity.this, AccueilActivity.class);
-            startActivity(intent);
+            finish();
         });
     }
 }
